@@ -1,0 +1,37 @@
+<html>
+
+<head>
+    <script>
+        let counter = 1;
+
+        // run this function when the document is loaded
+        window.onload = function () {
+
+            const heading = document.createElement('h1');
+            const heading_text = document.createTextNode('<-- DateTime Data Updates -->');
+            heading.appendChild(heading_text);
+
+            // update Real/Original/Regular/HTML DOM which will update the HTML Text/Browser Screen
+            document.body.appendChild(heading);
+
+            setInterval(() => {
+                const date_heading = document.createElement('h2');
+                const date_heading_text = document.createTextNode(`Update #${counter++}`);
+                date_heading.appendChild(date_heading_text);
+
+                const date_body = document.createElement('p');
+                const date_body_text = document.createTextNode(new Date());
+                date_body.appendChild(date_body_text);
+
+                // update Real DOM every 5 secs
+                document.body.appendChild(date_heading);
+                document.body.appendChild(date_body);
+            }, 5000);
+        }
+    </script>
+</head>
+
+<body>
+</body>
+
+</html>
