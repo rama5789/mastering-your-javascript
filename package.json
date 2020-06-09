@@ -1,0 +1,15 @@
+{
+  "name": "js-basic-tutorial",
+  "version": "1.0.0",
+  "description": "Javascript Basics",
+  "main": "index.js",
+  "scripts": {
+    "format": "prettier \"**/*.js\" --write"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "prettier": "2.0.5"
+  }
+}

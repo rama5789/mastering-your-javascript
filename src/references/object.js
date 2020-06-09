@@ -148,15 +148,16 @@ console.log('o5: ', o5);
     Creating Objects using "constructor function" (ES5 Style)
 */
 log(tag, 'create__Person_Object-using-constructor-function');
-function PersonA(firstName, lastName) {  // PersonA constructor function
-   this.firstName = firstName;
-   this.lastName = lastName;
-   this.fullName = function () {
-      return this.firstName + ' ' + this.lastName;
-   }
+function PersonA(firstName, lastName) {
+  // PersonA constructor function
+  this.firstName = firstName;
+  this.lastName = lastName;
+  this.fullName = function () {
+    return this.firstName + ' ' + this.lastName;
+  };
 }
 
-const person1 = new PersonA('Virat', 'Kohli');   // PersonA object 1
+const person1 = new PersonA('Virat', 'Kohli'); // PersonA object 1
 const person2 = new PersonA('Sachine', 'Tendulkar'); // PersonA object 2
 console.log('person1: ', person1);
 console.log('person1.fullName(): ', person1.fullName());
@@ -185,31 +186,41 @@ The prototype object of the constructor function is shared among all the objects
 console.log('PersonA.prototype: ', PersonA.prototype);
 console.log('person1.__proto__: ', person1.__proto__);
 console.log('person2.__proto__: ', person2.__proto__);
-console.log('PersonA.prototype === person1.__proto__: ', PersonA.prototype === person1.__proto__);
-console.log('PersonA.prototype === person2.__proto__: ', PersonA.prototype === person2.__proto__);
-console.log('person1.__proto__ === person2.__proto__: ', person1.__proto__ === person2.__proto__);
+console.log(
+  'PersonA.prototype === person1.__proto__: ',
+  PersonA.prototype === person1.__proto__
+);
+console.log(
+  'PersonA.prototype === person2.__proto__: ',
+  PersonA.prototype === person2.__proto__
+);
+console.log(
+  'person1.__proto__ === person2.__proto__: ',
+  person1.__proto__ === person2.__proto__
+);
 
 /* 
 # Prototype Object:
 As a "prototype object" is an object, we can attach properties and methods to the prototype object. Thus, enabling all the objects created using the constructor function to share those properties and methods.
 
 */
-function PersonB(firstName, lastName) { // PersonB constructor function
-   // properties and methods attached to PersonB instance only
-   this.firstName = firstName;
-   this.lastName = lastName;
-   this.strengths = ['Batting'];   // No Bug: Always Use this.
+function PersonB(firstName, lastName) {
+  // PersonB constructor function
+  // properties and methods attached to PersonB instance only
+  this.firstName = firstName;
+  this.lastName = lastName;
+  this.strengths = ['Batting']; // No Bug: Always Use this.
 }
 // properties and methods attached to prototype object
 PersonB.prototype.personType = 'Person';
 PersonB.prototype.fullName = function () {
-   return this.firstName + ' ' + this.lastName;
-}
-PersonB.prototype.nationalities = ['Indian'];   // Bug: Never use this.
+  return this.firstName + ' ' + this.lastName;
+};
+PersonB.prototype.nationalities = ['Indian']; // Bug: Never use this.
 console.log('PersonB.prototype: ', PersonB.prototype);
 
 const person3 = new PersonB('Yuvraj', 'Singh'); // PersonB object 1
-const person4 = new PersonB('Brett', 'Lee');    // PersonB object 2
+const person4 = new PersonB('Brett', 'Lee'); // PersonB object 2
 console.log('person3: ', person3);
 console.log('person3.strengths: ', person3.strengths);
 // inherited properties
@@ -223,11 +234,11 @@ console.log('person4.personType: ', person4.personType);
 console.log('person4.fullName(): ', person4.fullName());
 console.log('person4.nationalities: ', person4.nationalities);
 
-person3.personType = 'Cricketer';    // overwriting prototype object's personType property 
+person3.personType = 'Cricketer'; // overwriting prototype object's personType property
 console.log('person3.personType: ', person3.personType);
 console.log('person4.personType: ', person4.personType);
 
-person3.nationalities.push('Australian');    // overwriting prototype object's nationalities property (Buggy)
+person3.nationalities.push('Australian'); // overwriting prototype object's nationalities property (Buggy)
 console.log('person3.nationalities: ', person3.nationalities);
 console.log('person4.nationalities: ', person4.nationalities);
 
@@ -240,20 +251,20 @@ console.log('person4.strengths: ', person4.strengths);
 */
 log(tag, 'create__Person_Object-using-class');
 class PersonC {
-   constructor(firstName, lastName) {
-      this.firstName = firstName;
-      this.lastName = lastName;
-      this.strengths = ['Batting'];
-      this.personType = 'Person';
-   }
+  constructor(firstName, lastName) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.strengths = ['Batting'];
+    this.personType = 'Person';
+  }
 
-   fullName() {
-      return this.firstName + ' ' + this.lastName;
-   }
+  fullName() {
+    return this.firstName + ' ' + this.lastName;
+  }
 
-   static defaultName() {
-      return 'Red John';
-   }
+  static defaultName() {
+    return 'Red John';
+  }
 }
 console.log('PersonC.prototype: ', PersonC.prototype);
 console.log('PersonC.defaultName(): ', PersonC.defaultName());
@@ -275,26 +286,32 @@ console.log('person6: ', person6);
    Creating Objects "without new operator"
 */
 const restaurant = {
-   // properties
-   name: 'Taj Palace',
-   guestCapacity: 75,
-   guestCount: 0,
-   // methods
-   checkAvailability: function (partySize) {
-      let seatsLeft = this.guestCapacity - this.guestCount;
-      return partySize <= seatsLeft;
-   },
-   seatParty: function (partySize) {
-      this.guestCount = this.guestCount + partySize;
-   },
-   removeParty: function (partySize) {
-      this.guestCount = this.guestCount - partySize;
-   }
+  // properties
+  name: 'Taj Palace',
+  guestCapacity: 75,
+  guestCount: 0,
+  // methods
+  checkAvailability: function (partySize) {
+    let seatsLeft = this.guestCapacity - this.guestCount;
+    return partySize <= seatsLeft;
+  },
+  seatParty: function (partySize) {
+    this.guestCount = this.guestCount + partySize;
+  },
+  removeParty: function (partySize) {
+    this.guestCount = this.guestCount - partySize;
+  },
 };
 
 log(tag, 'create__Object');
 console.log('restaurant: ', restaurant);
 restaurant.seatParty(72);
-console.log('restaurant.checkAvailability(4): ', restaurant.checkAvailability(4));
+console.log(
+  'restaurant.checkAvailability(4): ',
+  restaurant.checkAvailability(4)
+);
 restaurant.removeParty(1);
-console.log('restaurant.checkAvailability(4): ', restaurant.checkAvailability(4));
+console.log(
+  'restaurant.checkAvailability(4): ',
+  restaurant.checkAvailability(4)
+);
