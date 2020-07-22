@@ -7,6 +7,8 @@ console.log('\n\n<------ array.js ----->');
 
 const tag = 'Array';
 
+console.time('Response_Time');
+
 {
   log(tag, 'array_construction');
 
@@ -200,7 +202,7 @@ const tag = 'Array';
 
   const resetArr = () => {
     arr = ['a', 'b', 'c'];
-    return arr;
+    console.log('resetArr: ', arr);
   };
 
   let arrToString = Array.prototype.toString;
@@ -237,7 +239,7 @@ const tag = 'Array';
   delete arr[arr.length - 1];
   console.log('arr: ', arr); // ["a", "b", "c1", empty]
 
-  console.log('resetArr(): ', resetArr()); // ["a", "b", "c"]
+  resetArr(); // ["a", "b", "c"]
   console.log('arr.splice(1, 2, "b1"): ', arr.splice(1, 2, 'b1')); // ["b", "c"] => removed elements
   console.log('arr: ', arr); // ["a", "b1"]
   console.log(
@@ -252,9 +254,109 @@ const tag = 'Array';
   console.log('arr: ', arr); // ["a", "b", "c"]
   console.log('arr2: ', arr2); // [4, 5, 6]
 
-  console.log('arr.slice(1): ', arr.slice(1));  // ["b", "c"]
-  console.log('arr.slice(1, arr.length): ', arr.slice(1, arr.length));  // ["b", "c"] => same as above
-  console.log('arr.slice(1,2): ', arr.slice(1,2));  // ["b"]
-  console.log('arr.slice(0,2): ', arr.slice(0,2));  // ["a", "b"]
+  console.log('arr.slice(1): ', arr.slice(1)); // ["b", "c"]
+  console.log('arr.slice(1, arr.length): ', arr.slice(1, arr.length)); // ["b", "c"] => same as above
+  console.log('arr.slice(1,2): ', arr.slice(1, 2)); // ["b"]
+  console.log('arr.slice(0,2): ', arr.slice(0, 2)); // ["a", "b"]
   console.log('arr: ', arr); // ["a", "b", "c"]
+
+  {
+    log(tag, 'a_array_iteration_methods');
+
+    arr.forEach((value, index, arr) => {
+      console.log('arr.forEach[value, index, arr]: ', value, index, arr); // a 0 ["a", "b", "c"]
+    });
+
+    /* Flatten an array */
+    const flatten = (arr) => {
+      const result = [];
+      arr.forEach((v) => {
+        if (Array.isArray(v)) result.push(...flatten(v));
+        else result.push(v);
+      });
+      return result;
+    };
+    const nestedArr = [1, 2, 3, [4, 5, [6, 7], 8, 9]];
+    console.log('flatten(nestedArr): ', flatten(nestedArr)); // [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+    console.log('arr.reverse(): ', arr.reverse()); // ["c", "b", "a"]
+    resetArr();
+
+    const mappedArr = arr.map((value, index, arr) => {
+      console.log('arr.map[value, index, arr]: ', value, index, arr); // a 0 ["a", "b", "c"]
+      return index + value;
+    });
+    console.log('mappedArr: ', mappedArr); // ["0a", "1b", "2c"] => transformed new array
+
+    const filteredArr = arr.filter((value, index, arr) => {
+      console.log('arr.filter[value, index, arr]: ', value, index, arr); // a 0 ["a", "b", "c"]
+      return index > 0; // filter condition
+    });
+    console.log('filteredArr: ', filteredArr); // ["b", "c"] => filtered non-transformed new array
+
+    const reducedArr = arr.reduce((accumulator, value, index, arr) => {
+      console.log(
+        'arr.reduce[accumulator, value, index, arr]: ',
+        accumulator,
+        value,
+        index,
+        arr
+      ); // z a 0 ["a", "b", "c"]
+      return accumulator + value;
+    }, 'z');
+    console.log('reducedArr: ', reducedArr); // zabc => reduced from left-to-right
+
+    const reducedRightArr = arr.reduceRight(
+      (accumulator, value, index, arr) => {
+        console.log(
+          'arr.reduceRight[accumulator, value, index, arr]: ',
+          accumulator,
+          value,
+          index,
+          arr
+        ); // z c 2 ["a", "b", "c"]
+        return accumulator + value;
+      },
+      'z'
+    );
+    console.log('reducedRightArr: ', reducedRightArr); // zcba => reduced from right-to-left
+
+    const everyArr = arr.every((value, index, arr) => {
+      console.log('arr.every[value, index, arr]: ', value, index, arr); // a 0 ["a", "b", "c"]
+      // return index < 2; // find condition
+      return index < 3; // find condition
+    });
+    console.log('everyArr: ', everyArr); // false => if index < 2 // true => if index < 3
+
+    const someArr = arr.some((value, index, arr) => {
+      console.log('arr.some[value, index, arr]: ', value, index, arr); // a 0 ["a", "b", "c"]
+      // return index < 0; // find condition
+      return index < 1; // find condition
+    });
+    console.log('someArr: ', someArr); // false => if index < 0 // true => if index < 1
+
+    console.log('arr.indexOf("a"): ', arr.indexOf('a')); // 0
+    console.log('arr.indexOf("a", 1): ', arr.indexOf('a', 1)); // -1 => can't find a
+
+    console.log('arr.lastIndexOf("c"): ', arr.lastIndexOf('c')); // 2
+    console.log('arr.lastIndexOf("c", 1): ', arr.lastIndexOf('c', 1)); // -1 => can't find c
+
+    console.log('arr.includes("a"): ', arr.includes('a')); // true
+    console.log('arr.includes("d"): ', arr.includes('d')); // false
+
+    const foundArr = arr.find((value, index, arr) => {
+      console.log('arr.find[value, index, arr]: ', value, index, arr); // a 0 ["a", "b", "c"]
+      return index > 0; // find condition
+    });
+    console.log('foundArr: ', foundArr); // b
+
+    const foundIndexArr = arr.findIndex((value, index, arr) => {
+      console.log('arr.findIndex[value, index, arr]: ', value, index, arr); // a 0 ["a", "b", "c"]
+      // return index > 2; // find condition
+      return index > 1; // find condition
+    });
+    console.log('foundIndexArr: ', foundIndexArr); // -1 => if index > 2 // 2 => if index > 1
+  }
 }
+
+console.timeEnd('Response_Time');

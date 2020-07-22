@@ -4,7 +4,7 @@
   "description": "Javascript Basics",
   "main": "index.js",
   "scripts": {
-    "format": "prettier \"**/*.js\" --write"
+    "format": "prettier \"**/*.{js,md}\" --write"
   },
   "author": "",
   "license": "ISC",
